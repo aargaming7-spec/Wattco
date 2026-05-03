@@ -9,7 +9,7 @@
 const products = [
   {
     id: 1,
-    name: "PDH Custom",
+    name: "Kemeja PDH",
     category: "pakaian",
     categoryLabel: "Kemeja",
     desc: "Pakaian Dinas Harian custom untuk himpunan. Material drill premium, sablon/bordir nama & logo.",
@@ -18,7 +18,7 @@ const products = [
     sizes: ["S","M","L","XL"],
     badge: "popular",
     badgeLabel: "Populer",
-    img: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&q=80",
+    img: "images\pdh.PNG",
     inStock: true
   },
   {
@@ -32,7 +32,7 @@ const products = [
     sizes: ["S","M","L","XL","XXL"],
     badge: "new",
     badgeLabel: "Baru",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80",
+    img: "images/kaos.PNG",
     inStock: true
   },
   {
@@ -41,30 +41,16 @@ const products = [
     category: "pakaian",
     categoryLabel: "Jaket",
     desc: "Jaket varsity atau bomber custom dengan bordir logo himpunan, premium & berkelas.",
-    price: 320000,
-    priceLabel: "Rp320.000",
+    price: 200000,
+    priceLabel: "Rp200.000",
     sizes: ["S","M","L","XL"],
     badge: "custom",
     badgeLabel: "Custom",
-    img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&q=80",
+    img: "images/jahim.PNG",
     inStock: true
   },
   {
     id: 4,
-    name: "Hoodie Custom",
-    category: "pakaian",
-    categoryLabel: "Hoodie",
-    desc: "Hoodie fleece premium, desain custom bordir atau sablon DTF untuk identitas komunitasmu.",
-    price: 275000,
-    priceLabel: "Rp275.000",
-    sizes: ["S","M","L","XL","XXL"],
-    badge: "custom",
-    badgeLabel: "Custom",
-    img: "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&q=80",
-    inStock: true
-  },
-  {
-    id: 5,
     name: "Pin Enamel",
     category: "aksesoris",
     categoryLabel: "Aksesoris",
@@ -74,25 +60,25 @@ const products = [
     sizes: [],
     badge: "new",
     badgeLabel: "Baru",
-    img: "https://images.unsplash.com/photo-1558171813-3aaf40f232a2?w=500&q=80",
+    img: "images\pin enamel.jfif",
+    inStock: true
+  },
+  {
+    id: 5,
+    name: "Wearpack",
+    category: "pakaian",
+    categoryLabel: "Wearpack",
+    desc: "Wearpack custom dengan sablon teks/logo. Cocok untuk kegiatan lapangan.",
+    price: 250000,
+    priceLabel: "Rp250.000",
+    sizes: [],
+    badge: "custom",
+    badgeLabel: "Custom",
+    img: "images/wearpack.PNG",
     inStock: true
   },
   {
     id: 6,
-    name: "Gelang Custom",
-    category: "aksesoris",
-    categoryLabel: "Aksesoris",
-    desc: "Gelang silikon atau kain custom dengan sablon teks/logo. Cocok untuk atribut kegiatan.",
-    price: 15000,
-    priceLabel: "Rp15.000",
-    sizes: [],
-    badge: "custom",
-    badgeLabel: "Custom",
-    img: "https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=500&q=80",
-    inStock: true
-  },
-  {
-    id: 7,
     name: "Tote Bag",
     category: "merchandise",
     categoryLabel: "Merchandise",
@@ -102,23 +88,24 @@ const products = [
     sizes: [],
     badge: "popular",
     badgeLabel: "Populer",
-    img: "https://images.unsplash.com/photo-1591561954555-607968c989ab?w=500&q=80",
+    img: "images/totebag.PNG",
     inStock: true
   },
-  {
-    id: 8,
-    name: "Mug Custom",
+
+ {
+    id: 7,
+    name: "Lanyard",
     category: "merchandise",
     categoryLabel: "Merchandise",
-    desc: "Mug keramik custom dengan printing full color. Ideal untuk merchandise atau hadiah.",
-    price: 45000,
-    priceLabel: "Rp45.000",
+    desc: "Lanyard premium dengan desain custom. Fungsional sekaligus media branding yang stylish.",
+    price: 15000,
+    priceLabel: "Rp15.000",
     sizes: [],
-    badge: "custom",
-    badgeLabel: "Custom",
-    img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500&q=80",
+    badge: "popular",
+    badgeLabel: "Populer",
+    img: "images\lanyard.PNG",
     inStock: true
-  }
+  },
 ];
 
 // =====================================================
@@ -128,9 +115,9 @@ const portfolioItems = [
   {
     id: 1,
     title: "PDH HMTE Unpad 2023",
-    desc: "Kemeja PDH Angkatan 2023",
+    desc: "Kemeja PDH Tahun 2023",
     tag: "PDH Custom",
-    img: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=800&q=80",
+    img: "images/pdh porto.png",
     featured: true
   },
   {
@@ -138,33 +125,17 @@ const portfolioItems = [
     title: "Jaket Himpunan Elektro",
     desc: "Batch 50 pcs, bordir premium",
     tag: "Jaket",
-    img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80",
+    img: "images\jahim porto.png",
     featured: false
   },
   {
     id: 3,
-    title: "Kaos Event Ospek 2023",
-    desc: "200 pcs untuk PKKMB",
-    tag: "Kaos Event",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
+    title: "Wearpack Praktikum 2023",
+    desc: "200 pcs untuk praktikum",
+    tag: "Wearpack",
+    img: "images\wearpack porto.png",
     featured: false
   },
-  {
-    id: 4,
-    title: "Pin Enamel Series",
-    desc: "Kumpulan pin enamel custom",
-    tag: "Pin Enamel",
-    img: "https://images.unsplash.com/photo-1558171813-3aaf40f232a2?w=600&q=80",
-    featured: false
-  },
-  {
-    id: 5,
-    title: "Tote Bag Komunitas",
-    desc: "Batch 100 pcs full color",
-    tag: "Tote Bag",
-    img: "https://images.unsplash.com/photo-1591561954555-607968c989ab?w=600&q=80",
-    featured: false
-  }
 ];
 
 // =====================================================
@@ -454,7 +425,7 @@ function renderProducts(filter = "all") {
 
 window.orderNow = function(productName) {
   const msg = encodeURIComponent(`Halo WattCo! Saya ingin order ${productName}. Mohon info lebih lanjut ya.`);
-  window.open(`https://wa.me/6281570475077?text=${msg}`, "_blank");
+  window.open(`https://wa.me/628157047507?text=${msg}`, "_blank");
 };
 
 window.addToCart = function(productId) {
