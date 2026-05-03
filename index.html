@@ -142,7 +142,7 @@
     <div class="hero-visual">
       <div class="hero-card-wrap">
         <div class="hero-card floating">
-          <img src="images/foto.jpg" alt="WattCo PDH Shirt" />
+          <img src="images/pdh.PNG" alt="WattCo PDH Shirt" />
           <div class="hero-card-badge">
             <span class="badge-dot"></span> PDH Custom
           </div>
@@ -266,6 +266,131 @@
     </div>
   </section>
 
+  <!-- ==================== CUSTOM ORDER ==================== -->
+  <section class="section order-section" id="order">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— Custom Order</div>
+        <h2>Pesan <span class="accent">Sekarang</span></h2>
+        <p>Isi form di bawah, kami akan segera menghubungimu via WhatsApp</p>
+      </div>
+
+      <div class="order-layout">
+        <div class="order-info">
+          <div class="order-info-card">
+            <div class="oic-icon"><i data-lucide="clipboard-list"></i></div>
+            <h4>Cara Order</h4>
+            <ol>
+              <li>Isi form pemesanan</li>
+              <li>Upload referensi desain</li>
+              <li>Tim kami akan konfirmasi via WA</li>
+              <li>Desain disetujui → produksi dimulai</li>
+              <li>Produk selesai & dikirim</li>
+            </ol>
+          </div>
+          <div class="order-info-card">
+            <div class="oic-icon"><i data-lucide="clock"></i></div>
+            <h4>Estimasi Produksi</h4>
+            <ul>
+              <li>Kemeja PDH: 7–14 hari</li>
+              <li>Kaos: 5–10 hari</li>
+              <li>Jaket: 10–21 hari</li>
+              <li>Pin Enamel: 14–21 hari</li>
+              <li>Aksesoris: 5–10 hari</li>
+            </ul>
+          </div>
+          <a href="https://wa.me/628157047507" target="_blank" class="order-wa-card">
+            <i data-lucide="message-circle"></i>
+            <div>
+              <strong>Tanya Dulu via WA</strong>
+              <span>+62 815-7047-507</span>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+          </a>
+        </div>
+
+        <form class="order-form" id="orderForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nama">Nama Lengkap *</label>
+              <input type="text" id="nama" name="nama" placeholder="Nama kamu" required />
+              <span class="form-error" id="namaError"></span>
+            </div>
+            <div class="form-group">
+              <label for="angkatan">Angkatan / Organisasi</label>
+              <input type="text" id="angkatan" name="angkatan" placeholder="Contoh: HMTE 2023" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="email@example.com" required />
+              <span class="form-error" id="emailError"></span>
+            </div>
+            <div class="form-group">
+              <label for="phone">No. WhatsApp *</label>
+              <input type="tel" id="phone" name="phone" placeholder="08xxxxxxxxxx" required />
+              <span class="form-error" id="phoneError"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="product">Jenis Produk *</label>
+            <select id="product" name="product" required>
+              <option value="">Pilih produk...</option>
+              <option value="PDH (Kemeja)">PDH (Kemeja) — Rp185.000</option>
+              <option value="Kaos Custom">Kaos Custom</option>
+              <option value="Jaket Himpunan">Jaket Himpunan</option>
+              <option value="Hoodie">Hoodie</option>
+              <option value="Pin Enamel">Pin Enamel</option>
+              <option value="Gelang Custom">Gelang Custom</option>
+              <option value="Tote Bag">Tote Bag</option>
+              <option value="Merchandise Lainnya">Merchandise Lainnya</option>
+            </select>
+            <span class="form-error" id="productError"></span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="qty">Jumlah (pcs) *</label>
+              <input type="number" id="qty" name="qty" min="1" placeholder="Min. 1 pcs" required />
+              <span class="form-error" id="qtyError"></span>
+            </div>
+            <div class="form-group">
+              <label for="ukuran">Ukuran</label>
+              <select id="ukuran" name="ukuran">
+                <option value="">Pilih ukuran...</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+                <option>Mix / Berbeda-beda</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="design">Upload Referensi Desain</label>
+            <div class="file-upload" id="fileUploadArea">
+              <input type="file" id="design" name="design" accept="image/*,.pdf,.ai,.psd" />
+              <div class="file-upload-content">
+                <i data-lucide="upload-cloud"></i>
+                <span>Klik atau drag file desain di sini</span>
+                <small>PNG, JPG, PDF, AI, PSD (max 10MB)</small>
+              </div>
+              <div class="file-preview" id="filePreview" style="display:none"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan Tambahan</label>
+            <textarea id="catatan" name="catatan" rows="4" placeholder="Deskripsikan kebutuhan lebih detail: warna, bahan, logo, dll..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i data-lucide="send"></i>
+            <span>Kirim & Pesan via WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
  
   <!-- ==================== FAQ ==================== -->
   <section class="section faq-section" id="faq">
@@ -290,7 +415,7 @@
         <p>Siap membantu kebutuhan merchandise himpunanmu</p>
       </div>
       <div class="contact-cards">
-        <a href="https://wa.me/6281570475077" target="_blank" class="contact-card">
+        <a href="https://wa.me/628157047507" target="_blank" class="contact-card">
           <div class="cc-icon wa-icon"><i data-lucide="message-circle"></i></div>
           <strong>WhatsApp</strong>
           <span>+62 815-7047-507</span>
