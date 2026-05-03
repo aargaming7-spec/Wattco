@@ -125,7 +125,7 @@ const portfolioItems = [
     title: "Jaket Himpunan Elektro",
     desc: "Batch 50 pcs, bordir premium",
     tag: "Jaket",
-    img: "images.jahim porto.png",
+    img: "images/jahim porto.png",
     featured: false
   },
   {
