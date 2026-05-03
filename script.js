@@ -537,7 +537,7 @@ function initCart() {
     msg += `\nTotal: ${formatPrice(cart.reduce((sum, item) => sum + item.price * item.qty, 0))}`;
     msg += "\n\nMohon konfirmasi pesanan saya ya!";
 
-    window.open(`https://wa.me/6281570475077?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/628157047507?text=${encodeURIComponent(msg)}`, "_blank");
   });
 }
 
@@ -769,7 +769,7 @@ function submitOrder() {
     if (catatan) msg += `\n*Catatan:* ${catatan}\n`;
     msg += `\nMohon konfirmasi dan informasi lanjutan. Terima kasih!`;
 
-    window.open(`https://wa.me/6281570475077?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/628157047507?text=${encodeURIComponent(msg)}`, "_blank");
 
     btn.disabled = false;
     btn.innerHTML = `<i data-lucide="send"></i> <span>Kirim & Pesan via WhatsApp</span>`;
