@@ -18,7 +18,7 @@ const products = [
     sizes: ["S","M","L","XL"],
     badge: "popular",
     badgeLabel: "Populer",
-    img: "images\pdh.PNG",
+    img: "images/pdh.PNG",
     inStock: true
   },
   {
@@ -60,7 +60,7 @@ const products = [
     sizes: [],
     badge: "new",
     badgeLabel: "Baru",
-    img: "images\pin enamel.jfif",
+    img: "images/pin enamel.jfif",
     inStock: true
   },
   {
@@ -103,7 +103,7 @@ const products = [
     sizes: [],
     badge: "popular",
     badgeLabel: "Populer",
-    img: "images\lanyard.PNG",
+    img: "images/lanyard.PNG",
     inStock: true
   },
 ];
@@ -125,7 +125,7 @@ const portfolioItems = [
     title: "Jaket Himpunan Elektro",
     desc: "Batch 50 pcs, bordir premium",
     tag: "Jaket",
-    img: "images\jahim porto.png",
+    img: "images.jahim porto.png",
     featured: false
   },
   {
@@ -133,7 +133,7 @@ const portfolioItems = [
     title: "Wearpack Praktikum 2023",
     desc: "200 pcs untuk praktikum",
     tag: "Wearpack",
-    img: "images\wearpack porto.png",
+    img: "images/wearpack porto.png",
     featured: false
   },
 ];
