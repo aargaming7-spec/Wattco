@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WattCo — Power Wear</title>
+  <meta name="description" content="WattCo — Merchandise & Atribut Kreatif untuk Himpunan, Komunitas, dan Individu." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ==================== CURSOR ==================== -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- ==================== LOADER ==================== -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">
+      <!-- WattCo SVG Logo -->
+      <svg class="loader-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="10,10 45,90 60,55 75,90 110,10 95,10 75,60 60,30 45,60 25,10" fill="white"/>
+        <polygon points="70,42 85,10 100,10 80,55" fill="#00d4ff" opacity="0.9"/>
+      </svg>
+      <span class="loader-text">WATTCO</span>
+    </div>
+    <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
+    <p class="loader-sub" id="loaderSub">Initializing Power Wear...</p>
+  </div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="nav-logo" onclick="scrollToSection('home')">
+      <svg class="nav-logo-svg" viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
+        <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+      </svg>
+      <span>WATT<span class="logo-accent">CO</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+      <li><a href="#products" onclick="scrollToSection('products')">Produk</a></li>
+      <li><a href="#portfolio" onclick="scrollToSection('portfolio')">Portfolio</a></li>
+      <li><a href="#order" onclick="scrollToSection('order')">Custom Order</a></li>
+      <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+      <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
+      <li><a href="#contact" onclick="scrollToSection('contact')">Kontak</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <!-- Cart button -->
+      <button class="cart-btn" id="cartBtn" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <!-- Dark mode toggle -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i data-lucide="moon" id="themeIcon"></i>
+      </button>
+      <!-- Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== CART SIDEBAR ==================== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Keranjang <span class="logo-accent">Order</span></h3>
+      <button id="closeCart"><i data-lucide="x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <i data-lucide="shopping-bag"></i>
+        <p>Keranjang masih kosong</p>
+        <span>Tambahkan produk untuk mulai order</span>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total Estimasi</span>
+        <strong id="cartTotalPrice">Rp 0</strong>
+      </div>
+      <p class="cart-note">*Harga final dikonfirmasi via WhatsApp</p>
+      <button class="btn-checkout" id="checkoutBtn">
+        <i data-lucide="message-circle"></i> Checkout via WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==================== HERO / HOME ==================== -->
+  <section class="hero" id="home">
+    <!-- Animated grid background -->
+    <div class="hero-grid"></div>
+    <!-- Glow orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Merchandise Kreatif untuk Himpunan & Komunitas
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line" data-text="POWER">POWER</span>
+        <span class="title-line accent-line" data-text="WEAR">WEAR</span>
+        <span class="title-line" data-text="YOUR">YOUR</span>
+        <span class="title-line accent-line" data-text="IDENTITY">IDENTITY</span>
+      </h1>
+      <p class="hero-desc">
+        WattCo menghadirkan solusi merchandise custom berkualitas tinggi — dari kemeja PDH, jaket himpunan, hingga aksesoris kreatif yang merepresentasikan identitas organisasimu.
+      </p>
+      <div class="hero-cta">
+        <a href="https://wa.me/6281570475077" target="_blank" class="btn-primary">
+          <i data-lucide="zap"></i> Pesan Sekarang
+        </a>
+        <button class="btn-secondary" onclick="scrollToSection('products')">
+          <i data-lucide="layers"></i> Lihat Produk
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>50+</strong><span>Produk Selesai</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>20+</strong><span>Klien Puas</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>100%</strong><span>Custom Design</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-wrap">
+        <div class="hero-card floating">
+          <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&q=80" alt="WattCo PDH Shirt" />
+          <div class="hero-card-badge">
+            <span class="badge-dot"></span> PDH Custom
+          </div>
+        </div>
+        <div class="hero-card-glow"></div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ==================== MARQUEE ==================== -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>PDH Custom</span><span class="sep">⚡</span>
+      <span>Kemeja Himpunan</span><span class="sep">⚡</span>
+      <span>Jaket Organisasi</span><span class="sep">⚡</span>
+      <span>Pin Enamel</span><span class="sep">⚡</span>
+      <span>Gelang Custom</span><span class="sep">⚡</span>
+      <span>Tote Bag</span><span class="sep">⚡</span>
+      <span>Kaos Event</span><span class="sep">⚡</span>
+      <span>Power Wear</span><span class="sep">⚡</span>
+      <!-- Duplicate for seamless loop -->
+      <span>PDH Custom</span><span class="sep">⚡</span>
+      <span>Kemeja Himpunan</span><span class="sep">⚡</span>
+      <span>Jaket Organisasi</span><span class="sep">⚡</span>
+      <span>Pin Enamel</span><span class="sep">⚡</span>
+      <span>Gelang Custom</span><span class="sep">⚡</span>
+      <span>Tote Bag</span><span class="sep">⚡</span>
+      <span>Kaos Event</span><span class="sep">⚡</span>
+      <span>Power Wear</span><span class="sep">⚡</span>
+    </div>
+  </div>
+
+  <!-- ==================== PRODUCTS ==================== -->
+  <section class="section products-section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— Katalog</div>
+        <h2>Produk <span class="accent">Unggulan</span></h2>
+        <p>Semua produk dapat dikustomisasi sesuai kebutuhan himpunan atau komunitasmu</p>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">Semua</button>
+        <button class="filter-tab" data-filter="pakaian">Pakaian</button>
+        <button class="filter-tab" data-filter="aksesoris">Aksesoris</button>
+        <button class="filter-tab" data-filter="merchandise">Merchandise</button>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section class="section about-section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-img-wrap">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="WattCo Studio" />
+            <div class="about-img-badge">
+              <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="32">
+                <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
+                <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+              </svg>
+              WattCo
+            </div>
+          </div>
+          <div class="about-stat-card">
+            <strong>2023</strong>
+            <span>Tahun Berdiri</span>
+          </div>
+        </div>
+        <div class="about-content">
+          <div class="section-tag">— About Us</div>
+          <h2>Tentang <span class="accent">WattCo</span></h2>
+          <p class="about-lead">Sebuah usaha yang bergerak di bidang penyediaan merchandise dan atribut kreatif.</p>
+          <p>WattCo menyediakan berbagai produk seperti pakaian, aksesoris, serta merchandise custom yang dapat disesuaikan dengan kebutuhan organisasi, komunitas, maupun individu.</p>
+          <p>WattCo berfokus pada pembuatan produk yang memiliki desain menarik, kualitas yang baik, serta dapat merepresentasikan identitas dari pelanggan atau organisasi yang memesan.</p>
+          <div class="about-features">
+            <div class="about-feat">
+              <div class="feat-icon"><i data-lucide="zap"></i></div>
+              <div><strong>Fast Production</strong><span>Proses cepat & tepat waktu</span></div>
+            </div>
+            <div class="about-feat">
+              <div class="feat-icon"><i data-lucide="shield-check"></i></div>
+              <div><strong>Quality First</strong><span>Material premium terpilih</span></div>
+            </div>
+            <div class="about-feat">
+              <div class="feat-icon"><i data-lucide="palette"></i></div>
+              <div><strong>Custom Design</strong><span>Desain sesuai identitasmu</span></div>
+            </div>
+            <div class="about-feat">
+              <div class="feat-icon"><i data-lucide="users"></i></div>
+              <div><strong>Community Focus</strong><span>Melayani himpunan & komunitas</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PORTFOLIO ==================== -->
+  <section class="section portfolio-section" id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— Portfolio</div>
+        <h2>Hasil <span class="accent">Karya</span></h2>
+        <p>Beberapa produk yang telah kami produksi untuk berbagai himpunan dan komunitas</p>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CUSTOM ORDER ==================== -->
+  <section class="section order-section" id="order">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— Custom Order</div>
+        <h2>Pesan <span class="accent">Sekarang</span></h2>
+        <p>Isi form di bawah, kami akan segera menghubungimu via WhatsApp</p>
+      </div>
+
+      <div class="order-layout">
+        <div class="order-info">
+          <div class="order-info-card">
+            <div class="oic-icon"><i data-lucide="clipboard-list"></i></div>
+            <h4>Cara Order</h4>
+            <ol>
+              <li>Isi form pemesanan</li>
+              <li>Upload referensi desain</li>
+              <li>Tim kami akan konfirmasi via WA</li>
+              <li>Desain disetujui → produksi dimulai</li>
+              <li>Produk selesai & dikirim</li>
+            </ol>
+          </div>
+          <div class="order-info-card">
+            <div class="oic-icon"><i data-lucide="clock"></i></div>
+            <h4>Estimasi Produksi</h4>
+            <ul>
+              <li>Kemeja PDH: 7–14 hari</li>
+              <li>Kaos: 5–10 hari</li>
+              <li>Jaket: 10–21 hari</li>
+              <li>Pin Enamel: 14–21 hari</li>
+              <li>Aksesoris: 5–10 hari</li>
+            </ul>
+          </div>
+          <a href="https://wa.me/6281570475077" target="_blank" class="order-wa-card">
+            <i data-lucide="message-circle"></i>
+            <div>
+              <strong>Tanya Dulu via WA</strong>
+              <span>+62 815-7047-507</span>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+          </a>
+        </div>
+
+        <form class="order-form" id="orderForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nama">Nama Lengkap *</label>
+              <input type="text" id="nama" name="nama" placeholder="Nama kamu" required />
+              <span class="form-error" id="namaError"></span>
+            </div>
+            <div class="form-group">
+              <label for="angkatan">Angkatan / Organisasi</label>
+              <input type="text" id="angkatan" name="angkatan" placeholder="Contoh: HMTE 2023" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="email@example.com" required />
+              <span class="form-error" id="emailError"></span>
+            </div>
+            <div class="form-group">
+              <label for="phone">No. WhatsApp *</label>
+              <input type="tel" id="phone" name="phone" placeholder="08xxxxxxxxxx" required />
+              <span class="form-error" id="phoneError"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="product">Jenis Produk *</label>
+            <select id="product" name="product" required>
+              <option value="">Pilih produk...</option>
+              <option value="PDH (Kemeja)">PDH (Kemeja) — Rp185.000</option>
+              <option value="Kaos Custom">Kaos Custom</option>
+              <option value="Jaket Himpunan">Jaket Himpunan</option>
+              <option value="Hoodie">Hoodie</option>
+              <option value="Pin Enamel">Pin Enamel</option>
+              <option value="Gelang Custom">Gelang Custom</option>
+              <option value="Tote Bag">Tote Bag</option>
+              <option value="Merchandise Lainnya">Merchandise Lainnya</option>
+            </select>
+            <span class="form-error" id="productError"></span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="qty">Jumlah (pcs) *</label>
+              <input type="number" id="qty" name="qty" min="1" placeholder="Min. 1 pcs" required />
+              <span class="form-error" id="qtyError"></span>
+            </div>
+            <div class="form-group">
+              <label for="ukuran">Ukuran</label>
+              <select id="ukuran" name="ukuran">
+                <option value="">Pilih ukuran...</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+                <option>Mix / Berbeda-beda</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="design">Upload Referensi Desain</label>
+            <div class="file-upload" id="fileUploadArea">
+              <input type="file" id="design" name="design" accept="image/*,.pdf,.ai,.psd" />
+              <div class="file-upload-content">
+                <i data-lucide="upload-cloud"></i>
+                <span>Klik atau drag file desain di sini</span>
+                <small>PNG, JPG, PDF, AI, PSD (max 10MB)</small>
+              </div>
+              <div class="file-preview" id="filePreview" style="display:none"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan Tambahan</label>
+            <textarea id="catatan" name="catatan" rows="4" placeholder="Deskripsikan kebutuhan lebih detail: warna, bahan, logo, dll..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i data-lucide="send"></i>
+            <span>Kirim & Pesan via WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FAQ ==================== -->
+  <section class="section faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— FAQ</div>
+        <h2>Pertanyaan <span class="accent">Umum</span></h2>
+        <p>Hal yang sering ditanyakan seputar layanan WattCo</p>
+      </div>
+      <div class="faq-list" id="faqList">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">— Kontak</div>
+        <h2>Hubungi <span class="accent">Kami</span></h2>
+        <p>Siap membantu kebutuhan merchandise himpunanmu</p>
+      </div>
+      <div class="contact-cards">
+        <a href="https://wa.me/6281570475077" target="_blank" class="contact-card">
+          <div class="cc-icon wa-icon"><i data-lucide="message-circle"></i></div>
+          <strong>WhatsApp</strong>
+          <span>+62 815-7047-507</span>
+          <div class="cc-arrow"><i data-lucide="arrow-up-right"></i></div>
+        </a>
+        <a href="https://instagram.com/vvatt.co" target="_blank" class="contact-card">
+          <div class="cc-icon ig-icon"><i data-lucide="instagram"></i></div>
+          <strong>Instagram</strong>
+          <span>@vvatt.co</span>
+          <div class="cc-arrow"><i data-lucide="arrow-up-right"></i></div>
+        </a>
+        <a href="mailto:wattco.id@gmail.com" class="contact-card">
+          <div class="cc-icon email-icon"><i data-lucide="mail"></i></div>
+          <strong>Email</strong>
+          <span>wattco.id@gmail.com</span>
+          <div class="cc-arrow"><i data-lucide="arrow-up-right"></i></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="36">
+            <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
+            <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+          </svg>
+          <span>WATT<span class="logo-accent">CO</span></span>
+        </div>
+        <p>Power Wear — Merchandise & Atribut Kreatif untuk Himpunan, Komunitas, dan Individu.</p>
+        <div class="footer-socials">
+          <a href="https://wa.me/6281570475077" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+          <a href="https://instagram.com/vvatt.co" target="_blank" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="mailto:wattco.id@gmail.com" aria-label="Email"><i data-lucide="mail"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h5>Navigasi</h5>
+        <ul>
+          <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+          <li><a href="#products" onclick="scrollToSection('products')">Produk</a></li>
+          <li><a href="#portfolio" onclick="scrollToSection('portfolio')">Portfolio</a></li>
+          <li><a href="#order" onclick="scrollToSection('order')">Custom Order</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Info</h5>
+        <ul>
+          <li><a href="#about" onclick="scrollToSection('about')">About Us</a></li>
+          <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
+          <li><a href="#contact" onclick="scrollToSection('contact')">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Produk</h5>
+        <ul>
+          <li><a href="#">PDH Custom</a></li>
+          <li><a href="#">Kaos & Hoodie</a></li>
+          <li><a href="#">Jaket Himpunan</a></li>
+          <li><a href="#">Pin & Aksesoris</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 WattCo. All rights reserved. — Power Wear Your Identity.</p>
+      <p>Target: Himpunan Mahasiswa Teknik Elektro, Universitas Padjadjaran</p>
+    </div>
+  </footer>
+
+  <!-- ==================== TOAST ==================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==================== BACK TO TOP ==================== -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i data-lucide="chevron-up"></i>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
