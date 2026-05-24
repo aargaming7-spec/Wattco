@@ -877,27 +877,61 @@ document.head.appendChild(spinStyle);
 // =====================================================
 
 // 1. TYPING EFFECT (hero section)
+// =====================================================
+// FIX: TYPING EFFECT — tidak bikin layout naik turun
+// Animasi hanya di elemen terpisah, bukan di hero title
+// =====================================================
+
 function initTypingEffect() {
-  const el = document.querySelector(".hero-title .title-line:first-child");
-  if (!el) return;
-  const words = ["POWER", "WATTCO", "CUSTOM", "POWER"];
+  // Buat elemen typing terpisah di bawah hero badge
+  const badge = document.querySelector(".hero-badge");
+  if (!badge) return;
+
+  const typingWrap = document.createElement("div");
+  typingWrap.style.cssText = `
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--accent); letter-spacing: 0.12em;
+    margin-bottom: 0.5rem; height: 20px;
+  `;
+  typingWrap.innerHTML = `
+    <span style="color:var(--text-muted)">></span>
+    <span id="typingTarget"></span>
+    <span style="display:inline-block;width:2px;height:14px;background:var(--accent);animation:cursorBlink .7s step-end infinite;vertical-align:middle"></span>
+  `;
+
+  // Sisipkan sebelum badge
+  badge.parentNode.insertBefore(typingWrap, badge);
+
+  // Inject cursor blink CSS
+  const s = document.createElement("style");
+  s.textContent = `@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}`;
+  document.head.appendChild(s);
+
+  const words = [
+    "PDH_Custom.exe",
+    "Jaket_Himpunan.exe",
+    "Power_Wear_Active",
+    "WattCo_Studio.exe",
+    "Order_Now() ⚡",
+  ];
+  const el = document.getElementById("typingTarget");
   let wi = 0, ci = 0, deleting = false;
-  const original = el.textContent;
 
   function type() {
     const w = words[wi];
     if (!deleting) {
       el.textContent = w.slice(0, ci + 1);
       ci++;
-      if (ci === w.length) { deleting = true; setTimeout(type, 1800); return; }
+      if (ci === w.length) { deleting = true; setTimeout(type, 1600); return; }
     } else {
       el.textContent = w.slice(0, ci - 1);
       ci--;
       if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
     }
-    setTimeout(type, deleting ? 55 : 120);
+    setTimeout(type, deleting ? 45 : 100);
   }
-  setTimeout(type, 2000); // mulai setelah loader selesai
+  setTimeout(type, 2500);
 }
 
 // 2. ELECTRIC PARTICLE BACKGROUND (canvas di hero)
@@ -1276,4 +1310,235 @@ document.addEventListener("DOMContentLoaded", () => {
   initMagneticTilt();
   initScanEffect();
   initStaggeredFAQ();
+});
+// =====================================================
+// ANIMASI BARU 1: SPOTLIGHT CURSOR
+// Efek sorotan cahaya mengikuti mouse di hero section
+// =====================================================
+function initSpotlight() {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+
+  const spotlight = document.createElement("div");
+  spotlight.style.cssText = `
+    position: absolute; width: 500px; height: 500px;
+    border-radius: 50%; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease, top 0.15s ease;
+    left: 50%; top: 50%;
+  `;
+  hero.style.position = "relative";
+  hero.appendChild(spotlight);
+
+  hero.addEventListener("mousemove", (e) => {
+    const r = hero.getBoundingClientRect();
+    spotlight.style.left = (e.clientX - r.left) + "px";
+    spotlight.style.top = (e.clientY - r.top) + "px";
+  });
+}
+
+// =====================================================
+// ANIMASI BARU 2: FLOATING BADGES di hero
+// Badge kecil melayang di sekitar hero card
+// =====================================================
+function initFloatingBadges() {
+  const heroVisual = document.querySelector(".hero-visual");
+  if (!heroVisual) return;
+
+  const badges = [
+    { text: "⚡ PDH Custom", delay: 0 },
+    { text: "✦ Premium Quality", delay: 1.2 },
+    { text: "🎨 Full Custom", delay: 2.4 },
+  ];
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .float-badge {
+      position: absolute;
+      padding: 6px 12px;
+      background: rgba(13, 21, 38, 0.9);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .float-badge:nth-child(1) { top: 10%; right: -20px; animation: floatBadge1 3s ease-in-out infinite; }
+    .float-badge:nth-child(2) { bottom: 25%; left: -30px; animation: floatBadge2 3.5s ease-in-out infinite; }
+    .float-badge:nth-child(3) { top: 45%; right: -25px; animation: floatBadge1 4s ease-in-out infinite; }
+    @keyframes floatBadge1 {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes floatBadge2 {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(8px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  heroVisual.style.position = "relative";
+  badges.forEach(b => {
+    const el = document.createElement("div");
+    el.className = "float-badge";
+    el.textContent = b.text;
+    el.style.animationDelay = b.delay + "s";
+    heroVisual.appendChild(el);
+  });
+}
+
+// =====================================================
+// ANIMASI BARU 3: SMOOTH SECTION TRANSITIONS
+// Setiap section masuk dengan animasi yang berbeda
+// =====================================================
+function initSectionTransitions() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .section-animate {
+      opacity: 0;
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.16,1,.3,1);
+    }
+    .section-animate.from-left { transform: translateX(-40px); }
+    .section-animate.from-right { transform: translateX(40px); }
+    .section-animate.from-bottom { transform: translateY(40px); }
+    .section-animate.in-view {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  const sections = [
+    { id: "products", dir: "from-bottom" },
+    { id: "about", dir: "from-left" },
+    { id: "portfolio", dir: "from-bottom" },
+    { id: "order", dir: "from-right" },
+    { id: "faq", dir: "from-bottom" },
+    { id: "contact", dir: "from-bottom" },
+  ];
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add("in-view"), 100);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  sections.forEach(({ id, dir }) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add("section-animate", dir);
+      obs.observe(el);
+    }
+  });
+}
+
+// =====================================================
+// ANIMASI BARU 4: NAVBAR INDICATOR
+// Garis biru berjalan di bawah navbar saat scroll
+// =====================================================
+function initNavProgress() {
+  const bar = document.createElement("div");
+  bar.style.cssText = `
+    position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+    background: linear-gradient(90deg, #00d4ff, #0066ff);
+    z-index: 9999;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  `;
+  document.body.appendChild(bar);
+
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (scrollTop / docHeight) * 100;
+    bar.style.width = pct + "%";
+  });
+}
+
+// =====================================================
+// ANIMASI BARU 5: PRODUCT CARD MAGNETIC HOVER
+// Kartu ikut bergerak mengikuti posisi mouse secara halus
+// =====================================================
+function initCardMagnetic() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .product-card {
+      transition: transform 0.08s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  document.addEventListener("mousemove", (e) => {
+    document.querySelectorAll(".product-card").forEach(card => {
+      const r = card.getBoundingClientRect();
+      const inCard = e.clientX > r.left && e.clientX < r.right &&
+                     e.clientY > r.top  && e.clientY < r.bottom;
+      if (inCard) {
+        const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
+        const y = ((e.clientY - r.top) / r.height - 0.5) * 12;
+        card.style.transform = `perspective(700px) rotateX(${-y}deg) rotateY(${x}deg) translateY(-6px) scale(1.02)`;
+      } else {
+        card.style.transform = "perspective(700px) rotateX(0) rotateY(0) translateY(0) scale(1)";
+      }
+    });
+  });
+}
+
+// =====================================================
+// ANIMASI BARU 6: SMOOTH SCROLL HIJACK
+// Scroll terasa lebih smooth dan premium
+// =====================================================
+function initSmoothScroll() {
+  let currentY = window.scrollY;
+  let targetY = window.scrollY;
+  let ticking = false;
+
+  // Hanya aktif di desktop
+  if (window.innerWidth < 768) return;
+
+  const style = document.createElement("style");
+  style.textContent = `html { scroll-behavior: auto !important; }`;
+  document.head.appendChild(style);
+
+  window.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    targetY += e.deltaY * 0.8;
+    targetY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(smoothStep);
+    }
+  }, { passive: false });
+
+  function smoothStep() {
+    currentY += (targetY - currentY) * 0.1;
+    window.scrollTo(0, currentY);
+    if (Math.abs(targetY - currentY) > 0.5) {
+      requestAnimationFrame(smoothStep);
+    } else {
+      currentY = targetY;
+      ticking = false;
+    }
+  }
+}
+
+// =====================================================
+// PANGGIL SEMUA ANIMASI
+// =====================================================
+document.addEventListener("DOMContentLoaded", () => {
+  initTypingEffect();        // Fix typing — tidak bikin layout loncat
+  initSpotlight();           // Sorotan cahaya ikut mouse
+  initFloatingBadges();      // Badge melayang di hero
+  initSectionTransitions();  // Tiap section masuk dengan animasi
+  initNavProgress();         // Progress bar scroll di navbar
+  initCardMagnetic();        // Kartu produk ikut mouse
+  initSmoothScroll();        // Scroll lebih smooth & premium
 });
