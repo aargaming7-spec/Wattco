@@ -1347,3 +1347,409 @@ body:hover .cursor-follower { opacity: 0.5; }
 [data-theme="light"] .navbar.scrolled { background: rgba(240,244,255,0.9); }
 [data-theme="light"] .nav-links.mobile-open { background: rgba(240,244,255,0.97); }
 [data-theme="light"] .orb { opacity: 0.1; }
+
+// =====================================================
+// ANIMASI TAMBAHAN — WattCo
+// =====================================================
+
+// 1. TYPING EFFECT (hero section)
+function initTypingEffect() {
+  const el = document.querySelector(".hero-title .title-line:first-child");
+  if (!el) return;
+  const words = ["POWER", "WATTCO", "CUSTOM", "POWER"];
+  let wi = 0, ci = 0, deleting = false;
+  const original = el.textContent;
+
+  function type() {
+    const w = words[wi];
+    if (!deleting) {
+      el.textContent = w.slice(0, ci + 1);
+      ci++;
+      if (ci === w.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      el.textContent = w.slice(0, ci - 1);
+      ci--;
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+    }
+    setTimeout(type, deleting ? 55 : 120);
+  }
+  setTimeout(type, 2000); // mulai setelah loader selesai
+}
+
+// 2. ELECTRIC PARTICLE BACKGROUND (canvas di hero)
+function initParticleBackground() {
+  const canvas = document.createElement("canvas");
+  canvas.id = "particleCanvas";
+  canvas.style.cssText = `
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 1;
+    opacity: 0.35;
+  `;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const N = 55;
+  const pts = Array.from({ length: N }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - .5) * .6,
+    vy: (Math.random() - .5) * .6,
+    r: Math.random() * 1.8 + .8
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < N; i++) {
+      const p = pts[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 212, 255, 0.8)";
+      ctx.fill();
+      for (let j = i + 1; j < N; j++) {
+        const q = pts[j];
+        const d = Math.hypot(p.x - q.x, p.y - q.y);
+        if (d < 100) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(0, 212, 255, ${(1 - d / 100) * .25})`;
+          ctx.lineWidth = .6; ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// 3. ANIMATED NUMBER COUNTER
+function initCounterAnimation() {
+  const stats = document.querySelectorAll(".stat strong");
+  const targets = [50, 20, 100]; // sesuaikan dengan angka di hero stats
+  const suffixes = ["+", "+", "%"];
+
+  function animateCount(el, target, suffix, duration = 1800) {
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      el.textContent = Math.round(ease * target) + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Jalankan saat elemen masuk viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(stats).indexOf(entry.target);
+        if (idx >= 0) animateCount(entry.target, targets[idx], suffixes[idx]);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  stats.forEach(el => observer.observe(el));
+}
+
+// 4. MOUSE PARALLAX pada hero card
+function initParallax() {
+  const card = document.querySelector(".hero-card");
+  if (!card) return;
+  document.addEventListener("mousemove", (e) => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const rx = ((e.clientY - cy) / cy) * 6;
+    const ry = ((e.clientX - cx) / cx) * -6;
+    card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  });
+  document.addEventListener("mouseleave", () => {
+    card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
+  });
+}
+
+// 5. RIPPLE EFFECT pada tombol
+function initRippleEffect() {
+  document.querySelectorAll(".btn-primary, .btn-secondary, .btn-submit, .btn-checkout").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      const ripple = document.createElement("span");
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px; height: ${size}px;
+        left: ${e.clientX - rect.left - size / 2}px;
+        top: ${e.clientY - rect.top - size / 2}px;
+        background: rgba(255,255,255,0.25);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: rippleAnim .5s ease-out forwards;
+        pointer-events: none;
+      `;
+      this.style.position = "relative";
+      this.style.overflow = "hidden";
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 500);
+    });
+  });
+}
+
+// 6. PAGE TRANSITION saat load
+function initPageTransition() {
+  document.body.style.opacity = "0";
+  document.body.style.transition = "opacity 0.5s ease";
+  window.addEventListener("load", () => {
+    setTimeout(() => { document.body.style.opacity = "1"; }, 100);
+  });
+}
+
+// Tambahkan CSS ripple ke head
+const extraStyle = document.createElement("style");
+extraStyle.textContent = `
+  @keyframes rippleAnim {
+    to { transform: scale(2.5); opacity: 0; }
+  }
+  .hero-card {
+    transition: transform 0.1s ease;
+  }
+`;
+document.head.appendChild(extraStyle);
+
+// Panggil semua animasi
+document.addEventListener("DOMContentLoaded", () => {
+  initParticleBackground();
+  initTypingEffect();
+  initCounterAnimation();
+  initParallax();
+  initRippleEffect();
+});
+
+// =====================================================
+// ANIMASI TAMBAHAN BATCH 2 — WattCo
+// =====================================================
+
+// 7. LIGHTNING PULSE — elemen dekoratif hero
+function initLightningPulse() {
+  const bolts = document.querySelectorAll(".marquee-track .sep");
+  let i = 0;
+  setInterval(() => {
+    bolts.forEach(b => b.style.opacity = "0.2");
+    if (bolts[i]) {
+      bolts[i].style.opacity = "1";
+      bolts[i].style.transform = "scale(1.4)";
+      bolts[i].style.transition = "all 0.2s";
+      setTimeout(() => {
+        if (bolts[i]) { bolts[i].style.transform = "scale(1)"; }
+      }, 200);
+    }
+    i = (i + 1) % bolts.length;
+  }, 300);
+}
+
+// 8. GLITCH TEXT — otomatis tiap beberapa detik
+function initGlitchEffect() {
+  const targets = document.querySelectorAll(".hero-title .title-line");
+  if (!targets.length) return;
+
+  // Inject CSS glitch
+  const s = document.createElement("style");
+  s.textContent = `
+    .glitch-active { position: relative; }
+    .glitch-active::before, .glitch-active::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; overflow: hidden;
+    }
+    .glitch-active::before {
+      color: #00d4ff;
+      animation: gltch1 0.15s steps(2) 3;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    }
+    .glitch-active::after {
+      color: #ff4081;
+      animation: gltch2 0.15s steps(2) 3;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+    }
+    @keyframes gltch1 {
+      0% { transform: translate(-4px, 0); }
+      50% { transform: translate(4px, 0); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes gltch2 {
+      0% { transform: translate(4px, 0); }
+      50% { transform: translate(-4px, 0); }
+      100% { transform: translate(0, 0); }
+    }
+  `;
+  document.head.appendChild(s);
+
+  function glitch() {
+    const el = targets[Math.floor(Math.random() * targets.length)];
+    el.setAttribute("data-text", el.textContent);
+    el.classList.add("glitch-active");
+    setTimeout(() => el.classList.remove("glitch-active"), 500);
+  }
+  setInterval(glitch, 4000);
+}
+
+// 9. PROGRESS BAR ANIMATION — untuk section about
+function initProgressBars() {
+  // Tambahkan section progress di about jika belum ada
+  const aboutContent = document.querySelector(".about-content");
+  if (!aboutContent) return;
+
+  const progSection = document.createElement("div");
+  progSection.className = "progress-section";
+  progSection.style.cssText = "margin-top: 1.5rem; display: flex; flex-direction: column; gap: 12px;";
+  progSection.innerHTML = `
+    <div class="prog-row" style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:0.8rem;color:var(--text-secondary);width:100px;flex-shrink:0">Kualitas Produk</span>
+      <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
+        <div class="prog-fill" data-target="95" style="height:100%;width:0%;background:var(--gradient);border-radius:99px;transition:width 1.4s cubic-bezier(.4,0,.2,1)"></div>
+      </div>
+      <span class="prog-num" style="font-size:0.8rem;color:var(--accent);font-weight:700;width:36px;text-align:right">0%</span>
+    </div>
+    <div class="prog-row" style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:0.8rem;color:var(--text-secondary);width:100px;flex-shrink:0">Ketepatan Waktu</span>
+      <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
+        <div class="prog-fill" data-target="90" style="height:100%;width:0%;background:var(--gradient);border-radius:99px;transition:width 1.4s cubic-bezier(.4,0,.2,1)"></div>
+      </div>
+      <span class="prog-num" style="font-size:0.8rem;color:var(--accent);font-weight:700;width:36px;text-align:right">0%</span>
+    </div>
+    <div class="prog-row" style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:0.8rem;color:var(--text-secondary);width:100px;flex-shrink:0">Kepuasan Klien</span>
+      <div style="flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
+        <div class="prog-fill" data-target="98" style="height:100%;width:0%;background:var(--gradient);border-radius:99px;transition:width 1.4s cubic-bezier(.4,0,.2,1)"></div>
+      </div>
+      <span class="prog-num" style="font-size:0.8rem;color:var(--accent);font-weight:700;width:36px;text-align:right">0%</span>
+    </div>
+  `;
+  aboutContent.appendChild(progSection);
+
+  // Trigger saat masuk viewport
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const rows = entry.target.querySelectorAll(".prog-row");
+      rows.forEach((row, i) => {
+        const fill = row.querySelector(".prog-fill");
+        const num = row.querySelector(".prog-num");
+        const target = parseInt(fill.dataset.target);
+        setTimeout(() => {
+          fill.style.width = target + "%";
+          const start = performance.now();
+          function tick(now) {
+            const t = Math.min((now - start) / 1400, 1);
+            num.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target) + "%";
+            if (t < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }, i * 200);
+      });
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+  obs.observe(progSection);
+}
+
+// 10. 3D MAGNETIC TILT — semua product cards
+function initMagneticTilt() {
+  const style = document.createElement("style");
+  style.textContent = `.product-card { transform-style: preserve-3d; }`;
+  document.head.appendChild(style);
+
+  document.addEventListener("mousemove", (e) => {
+    document.querySelectorAll(".product-card").forEach(card => {
+      const r = card.getBoundingClientRect();
+      const inCard = e.clientX > r.left && e.clientX < r.right &&
+                     e.clientY > r.top && e.clientY < r.bottom;
+      if (inCard) {
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-6px)`;
+        card.style.transition = "transform 0.08s ease";
+      } else {
+        card.style.transform = "perspective(600px) rotateX(0) rotateY(0) translateY(0)";
+        card.style.transition = "transform 0.4s ease";
+      }
+    });
+  });
+}
+
+// 11. HUD SCAN LINE — pada portfolio images
+function initScanEffect() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .portfolio-item::after {
+      content: '';
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.6), transparent);
+      animation: scanLine 3s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanLine {
+      from { top: -2px; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      to { top: 100%; opacity: 0; }
+    }
+    .portfolio-item:nth-child(2)::after { animation-delay: -1s; }
+    .portfolio-item:nth-child(3)::after { animation-delay: -2s; }
+    .portfolio-item:nth-child(4)::after { animation-delay: -.5s; }
+    .portfolio-item:nth-child(5)::after { animation-delay: -1.5s; }
+  `;
+  document.head.appendChild(style);
+}
+
+// 12. STAGGERED LIST — untuk FAQ items
+function initStaggeredFAQ() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .faq-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.3s;
+    }
+    .faq-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  `;
+  document.head.appendChild(style);
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const items = document.querySelectorAll(".faq-item");
+        items.forEach((item, i) => {
+          setTimeout(() => item.classList.add("visible"), i * 90);
+        });
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const faqSection = document.getElementById("faq");
+  if (faqSection) obs.observe(faqSection);
+}
+
+// Panggil semua di DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  initLightningPulse();
+  initGlitchEffect();
+  initProgressBars();
+  initMagneticTilt();
+  initScanEffect();
+  initStaggeredFAQ();
+});
