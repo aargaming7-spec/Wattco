@@ -6,42 +6,41 @@
   <title>WattCo — Power Wear</title>
   <meta name="description" content="WattCo — Merchandise & Atribut Kreatif untuk Himpunan, Komunitas, dan Individu." />
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Lucide Icons CDN -->
+  <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ==================== CURSOR ==================== -->
+  <!-- CURSOR -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-follower" id="cursorFollower"></div>
 
-  <!-- ==================== LOADER ==================== -->
+  <!-- LOADER -->
   <div class="loader" id="loader">
     <div class="loader-logo">
-      <!-- WattCo SVG Logo -->
       <svg class="loader-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
         <polygon points="10,10 45,90 60,55 75,90 110,10 95,10 75,60 60,30 45,60 25,10" fill="white"/>
-        <polygon points="70,42 85,10 100,10 80,55" fill="#00d4ff" opacity="0.9"/>
+        <polygon points="70,42 85,10 100,10 80,55" fill="#0A84FF" opacity="0.9"/>
       </svg>
       <span class="loader-text">WATTCO</span>
     </div>
     <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
-    <p class="loader-sub" id="loaderSub">Initializing Power Wear...</p>
+    <p class="loader-sub" id="loaderSub">Loading Power Wear...</p>
   </div>
 
-  <!-- ==================== NAVBAR ==================== -->
+  <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <a href="#home" class="nav-logo" onclick="scrollToSection('home')">
       <svg class="nav-logo-svg" viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg">
         <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
-        <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+        <polygon points="48,28 58,5 68,5 54,38" fill="#0A84FF"/>
       </svg>
       <span>WATT<span class="logo-accent">CO</span></span>
     </a>
@@ -49,31 +48,29 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
       <li><a href="#products" onclick="scrollToSection('products')">Produk</a></li>
+      <li><a href="#studio" onclick="scrollToSection('studio')">Design Studio</a></li>
       <li><a href="#portfolio" onclick="scrollToSection('portfolio')">Portfolio</a></li>
+      <li><a href="#tracking" onclick="scrollToSection('tracking')">Lacak Order</a></li>
       <li><a href="#order" onclick="scrollToSection('order')">Custom Order</a></li>
       <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
-      <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
       <li><a href="#contact" onclick="scrollToSection('contact')">Kontak</a></li>
     </ul>
 
     <div class="nav-actions">
-      <!-- Cart button -->
       <button class="cart-btn" id="cartBtn" aria-label="Cart">
         <i data-lucide="shopping-bag"></i>
         <span class="cart-count" id="cartCount">0</span>
       </button>
-      <!-- Dark mode toggle -->
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <i data-lucide="moon" id="themeIcon"></i>
       </button>
-      <!-- Hamburger -->
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
-  <!-- ==================== CART SIDEBAR ==================== -->
+  <!-- CART SIDEBAR -->
   <div class="cart-overlay" id="cartOverlay"></div>
   <aside class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
@@ -83,7 +80,7 @@
     <div class="cart-items" id="cartItems">
       <div class="cart-empty" id="cartEmpty">
         <i data-lucide="shopping-bag"></i>
-        <p>Keranjang masih kosong</p>
+        <p>Keranjang kosong</p>
         <span>Tambahkan produk untuk mulai order</span>
       </div>
     </div>
@@ -99,30 +96,25 @@
     </div>
   </aside>
 
-  <!-- ==================== HERO / HOME ==================== -->
+  <!-- ==================== HERO ==================== -->
   <section class="hero" id="home">
-    <!-- Animated grid background -->
-    <div class="hero-grid"></div>
-    <!-- Glow orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-noise"></div>
 
     <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Merchandise Kreatif untuk Himpunan & Komunitas
+      <div class="hero-eyebrow fade-in">
+        <span class="eyebrow-dot"></span>
+        Merchandise Kreatif untuk Himpunan &amp; Komunitas
       </div>
-      <h1 class="hero-title">
-        <span class="title-line" data-text="POWER">POWER</span>
-        <span class="title-line accent-line" data-text="WEAR">WEAR</span>
-        <span class="title-line" data-text="YOUR">YOUR</span>
-        <span class="title-line accent-line" data-text="IDENTITY">IDENTITY</span>
+      <h1 class="hero-title fade-in">
+        <span class="line">Power</span>
+        <span class="line line-accent">Wear Your</span>
+        <span class="line">Identity.</span>
       </h1>
-      <p class="hero-desc">
-        WattCo menghadirkan solusi merchandise custom berkualitas tinggi — dari kemeja PDH, jaket himpunan, hingga aksesoris kreatif yang merepresentasikan identitas organisasimu.
+      <p class="hero-desc fade-in">
+        WattCo menghadirkan merchandise custom berkualitas tinggi — dari kemeja PDH, jaket himpunan, hingga aksesoris kreatif yang merepresentasikan identitas organisasimu.
       </p>
-      <div class="hero-cta">
+      <div class="hero-cta fade-in">
         <a href="https://wa.me/628157047507" target="_blank" class="btn-primary">
           <i data-lucide="zap"></i> Pesan Sekarang
         </a>
@@ -130,53 +122,48 @@
           <i data-lucide="layers"></i> Lihat Produk
         </button>
       </div>
-      <div class="hero-stats">
+      <div class="hero-stats fade-in">
         <div class="stat"><strong>50+</strong><span>Produk Selesai</span></div>
-        <div class="stat-divider"></div>
+        <div class="stat-sep"></div>
         <div class="stat"><strong>20+</strong><span>Klien Puas</span></div>
-        <div class="stat-divider"></div>
+        <div class="stat-sep"></div>
         <div class="stat"><strong>100%</strong><span>Custom Design</span></div>
       </div>
     </div>
 
     <div class="hero-visual">
-      <div class="hero-card-wrap">
-        <div class="hero-card floating">
-          <img src="images/pdh.PNG" alt="WattCo PDH Shirt" />
-          <div class="hero-card-badge">
-            <span class="badge-dot"></span> PDH Custom
+      <div class="hero-img-frame">
+        <img src="images/pdh.PNG" alt="WattCo PDH Shirt" />
+        <div class="hero-badge-float">
+          <div class="hbf-dot"></div>
+          <div class="hbf-text">
+            <strong>PDH Custom</strong>
+            <span>Produksi aktif sekarang</span>
           </div>
         </div>
-        <div class="hero-card-glow"></div>
       </div>
-    </div>
-
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
     </div>
   </section>
 
-  <!-- ==================== MARQUEE ==================== -->
+  <!-- MARQUEE -->
   <div class="marquee-wrap">
     <div class="marquee-track">
-      <span>PDH Custom</span><span class="sep">⚡</span>
-      <span>Kemeja Himpunan</span><span class="sep">⚡</span>
-      <span>Jaket Organisasi</span><span class="sep">⚡</span>
-      <span>Pin Enamel</span><span class="sep">⚡</span>
-      <span>Gelang Custom</span><span class="sep">⚡</span>
-      <span>Tote Bag</span><span class="sep">⚡</span>
-      <span>Kaos Event</span><span class="sep">⚡</span>
-      <span>Power Wear</span><span class="sep">⚡</span>
-      <!-- Duplicate for seamless loop -->
-      <span>PDH Custom</span><span class="sep">⚡</span>
-      <span>Kemeja Himpunan</span><span class="sep">⚡</span>
-      <span>Jaket Organisasi</span><span class="sep">⚡</span>
-      <span>Pin Enamel</span><span class="sep">⚡</span>
-      <span>Gelang Custom</span><span class="sep">⚡</span>
-      <span>Tote Bag</span><span class="sep">⚡</span>
-      <span>Kaos Event</span><span class="sep">⚡</span>
-      <span>Power Wear</span><span class="sep">⚡</span>
+      <span>PDH Custom</span><span class="sep">·</span>
+      <span>Kemeja Himpunan</span><span class="sep">·</span>
+      <span>Jaket Organisasi</span><span class="sep">·</span>
+      <span>Pin Enamel</span><span class="sep">·</span>
+      <span>Gelang Custom</span><span class="sep">·</span>
+      <span>Tote Bag</span><span class="sep">·</span>
+      <span>Kaos Event</span><span class="sep">·</span>
+      <span>Design Studio</span><span class="sep">·</span>
+      <span>PDH Custom</span><span class="sep">·</span>
+      <span>Kemeja Himpunan</span><span class="sep">·</span>
+      <span>Jaket Organisasi</span><span class="sep">·</span>
+      <span>Pin Enamel</span><span class="sep">·</span>
+      <span>Gelang Custom</span><span class="sep">·</span>
+      <span>Tote Bag</span><span class="sep">·</span>
+      <span>Kaos Event</span><span class="sep">·</span>
+      <span>Design Studio</span><span class="sep">·</span>
     </div>
   </div>
 
@@ -184,21 +171,30 @@
   <section class="section products-section" id="products">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">— Katalog</div>
+        <div class="section-eyebrow">Katalog Produk</div>
         <h2>Produk <span class="accent">Unggulan</span></h2>
         <p>Semua produk dapat dikustomisasi sesuai kebutuhan himpunan atau komunitasmu</p>
       </div>
-
-      <!-- Filter tabs -->
       <div class="filter-tabs" id="filterTabs">
         <button class="filter-tab active" data-filter="all">Semua</button>
         <button class="filter-tab" data-filter="pakaian">Pakaian</button>
         <button class="filter-tab" data-filter="aksesoris">Aksesoris</button>
         <button class="filter-tab" data-filter="merchandise">Merchandise</button>
       </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
 
-      <div class="products-grid" id="productsGrid">
-        <!-- Injected by JS -->
+  <!-- ==================== DESIGN STUDIO ==================== -->
+  <section class="section" id="studio" style="background:var(--bg-raised)">
+    <div class="container">
+      <div class="section-header centered">
+        <div class="section-eyebrow">Fitur Eksklusif</div>
+        <h2>Design <span class="accent">Studio</span></h2>
+        <p>Preview desain merchandise-mu secara real-time sebelum memesan</p>
+      </div>
+      <div class="studio-grid" id="studioGrid">
+        <!-- Built by spa.js -->
       </div>
     </div>
   </section>
@@ -210,23 +206,27 @@
         <div class="about-visual">
           <div class="about-img-wrap">
             <img src="images/logo.jpeg" alt="WattCo Studio" />
-            <div class="about-img-badge">
-              <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="32">
+            <div class="about-img-overlay"></div>
+            <div class="about-img-tag">
+              <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="28">
                 <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
-                <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+                <polygon points="48,28 58,5 68,5 54,38" fill="#0A84FF"/>
               </svg>
-              WattCo
+              <div>
+                <strong>WattCo</strong>
+                <span>Power Wear Since 2023</span>
+              </div>
             </div>
           </div>
-          <div class="about-stat-card">
+          <div class="about-stat-bubble">
             <strong>2023</strong>
             <span>Tahun Berdiri</span>
           </div>
         </div>
         <div class="about-content">
-          <div class="section-tag">— About Us</div>
+          <div class="section-eyebrow">About Us</div>
           <h2>Tentang <span class="accent">WattCo</span></h2>
-          <p class="about-lead">Sebuah usaha yang bergerak di bidang penyediaan merchandise dan atribut kreatif.</p>
+          <p class="about-lead">Usaha merchandise dan atribut kreatif yang berkomitmen pada kualitas dan identitas.</p>
           <p>WattCo menyediakan berbagai produk seperti pakaian, aksesoris, serta merchandise custom yang dapat disesuaikan dengan kebutuhan organisasi, komunitas, maupun individu.</p>
           <p>WattCo berfokus pada pembuatan produk yang memiliki desain menarik, kualitas yang baik, serta dapat merepresentasikan identitas dari pelanggan atau organisasi yang memesan.</p>
           <div class="about-features">
@@ -256,13 +256,23 @@
   <section class="section portfolio-section" id="portfolio">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">— Portfolio</div>
+        <div class="section-eyebrow">Portfolio</div>
         <h2>Hasil <span class="accent">Karya</span></h2>
-        <p>Beberapa produk yang telah kami produksi untuk berbagai himpunan dan komunitas</p>
+        <p>Beberapa produk yang telah kami produksi</p>
       </div>
-      <div class="portfolio-grid" id="portfolioGrid">
-        <!-- Injected by JS -->
+      <div class="portfolio-grid" id="portfolioGrid"></div>
+    </div>
+  </section>
+
+  <!-- ==================== TRACKING ==================== -->
+  <section class="section" id="tracking" style="background:var(--bg)">
+    <div class="container">
+      <div class="section-header centered">
+        <div class="section-eyebrow">Track Order</div>
+        <h2>Lacak <span class="accent">Pesanan</span></h2>
+        <p>Masukkan nomor order untuk melihat progress pembuatan merchandise kamu</p>
       </div>
+      <div id="trackingWidget"></div>
     </div>
   </section>
 
@@ -270,11 +280,10 @@
   <section class="section order-section" id="order">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">— Custom Order</div>
+        <div class="section-eyebrow">Custom Order</div>
         <h2>Pesan <span class="accent">Sekarang</span></h2>
         <p>Isi form di bawah, kami akan segera menghubungimu via WhatsApp</p>
       </div>
-
       <div class="order-layout">
         <div class="order-info">
           <div class="order-info-card">
@@ -283,9 +292,9 @@
             <ol>
               <li>Isi form pemesanan</li>
               <li>Upload referensi desain</li>
-              <li>Tim kami akan konfirmasi via WA</li>
-              <li>Desain disetujui → produksi dimulai</li>
-              <li>Produk selesai & dikirim</li>
+              <li>Tim kami konfirmasi via WA</li>
+              <li>Desain disetujui → produksi</li>
+              <li>Produk selesai &amp; dikirim</li>
             </ol>
           </div>
           <div class="order-info-card">
@@ -358,11 +367,8 @@
               <label for="ukuran">Ukuran</label>
               <select id="ukuran" name="ukuran">
                 <option value="">Pilih ukuran...</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
-                <option>XXL</option>
+                <option>S</option><option>M</option><option>L</option>
+                <option>XL</option><option>XXL</option>
                 <option>Mix / Berbeda-beda</option>
               </select>
             </div>
@@ -385,33 +391,31 @@
           </div>
           <button type="submit" class="btn-submit" id="submitBtn">
             <i data-lucide="send"></i>
-            <span>Kirim & Pesan via WhatsApp</span>
+            <span>Kirim &amp; Pesan via WhatsApp</span>
           </button>
         </form>
       </div>
     </div>
   </section>
- 
+
   <!-- ==================== FAQ ==================== -->
   <section class="section faq-section" id="faq">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">— FAQ</div>
+      <div class="section-header centered">
+        <div class="section-eyebrow">FAQ</div>
         <h2>Pertanyaan <span class="accent">Umum</span></h2>
         <p>Hal yang sering ditanyakan seputar layanan WattCo</p>
       </div>
-      <div class="faq-list" id="faqList">
-        <!-- Injected by JS -->
-      </div>
+      <div class="faq-list" id="faqList"></div>
     </div>
   </section>
 
   <!-- ==================== CONTACT ==================== -->
   <section class="section contact-section" id="contact">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">— Kontak</div>
-        <h2>Hubungi Kami <span class="accent">Untuk Pemesanan</span></h2>
+      <div class="section-header centered">
+        <div class="section-eyebrow">Kontak</div>
+        <h2>Hubungi <span class="accent">Kami</span></h2>
         <p>Siap membantu kebutuhan merchandise himpunanmu</p>
       </div>
       <div class="contact-cards">
@@ -437,18 +441,18 @@
     </div>
   </section>
 
-  <!-- ==================== FOOTER ==================== -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">
-          <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="36">
+          <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="30">
             <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
-            <polygon points="48,28 58,5 68,5 54,38" fill="#00d4ff"/>
+            <polygon points="48,28 58,5 68,5 54,38" fill="#0A84FF"/>
           </svg>
           <span>WATT<span class="logo-accent">CO</span></span>
         </div>
-        <p>Power Wear — Merchandise & Atribut Kreatif untuk Himpunan, Komunitas, dan Individu.</p>
+        <p>Power Wear — Merchandise &amp; Atribut Kreatif untuk Himpunan, Komunitas, dan Individu.</p>
         <div class="footer-socials">
           <a href="https://wa.me/628157047507" target="_blank" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
           <a href="https://instagram.com/vvatt.co" target="_blank" aria-label="Instagram"><i data-lucide="instagram"></i></a>
@@ -460,14 +464,15 @@
         <ul>
           <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
           <li><a href="#products" onclick="scrollToSection('products')">Produk</a></li>
+          <li><a href="#studio" onclick="scrollToSection('studio')">Design Studio</a></li>
           <li><a href="#portfolio" onclick="scrollToSection('portfolio')">Portfolio</a></li>
-          <li><a href="#order" onclick="scrollToSection('order')">Custom Order</a></li>
         </ul>
       </div>
       <div class="footer-links">
         <h5>Info</h5>
         <ul>
           <li><a href="#about" onclick="scrollToSection('about')">About Us</a></li>
+          <li><a href="#tracking" onclick="scrollToSection('tracking')">Lacak Order</a></li>
           <li><a href="#faq" onclick="scrollToSection('faq')">FAQ</a></li>
           <li><a href="#contact" onclick="scrollToSection('contact')">Kontak</a></li>
         </ul>
@@ -475,10 +480,10 @@
       <div class="footer-links">
         <h5>Produk</h5>
         <ul>
-          <li><a href="#">PDH Custom</a></li>
-          <li><a href="#">Kaos & Hoodie</a></li>
-          <li><a href="#">Jaket Himpunan</a></li>
-          <li><a href="#">Pin & Aksesoris</a></li>
+          <li><a href="#products">PDH Custom</a></li>
+          <li><a href="#products">Kaos &amp; Hoodie</a></li>
+          <li><a href="#products">Jaket Himpunan</a></li>
+          <li><a href="#products">Pin &amp; Aksesoris</a></li>
         </ul>
       </div>
     </div>
@@ -488,14 +493,16 @@
     </div>
   </footer>
 
-  <!-- ==================== TOAST ==================== -->
+  <!-- TOAST -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ==================== BACK TO TOP ==================== -->
+  <!-- BACK TO TOP -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
     <i data-lucide="chevron-up"></i>
   </button>
 
   <script src="script.js"></script>
+  <script src="tracking.js"></script>
+  <script src="spa.js"></script>
 </body>
 </html>

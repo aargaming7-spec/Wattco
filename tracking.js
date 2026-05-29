@@ -1,26 +1,12 @@
 /* ===================================================
    WattCo — Order Tracking System | tracking.js
-   Update data order di bagian ORDERS DATA di bawah
+   Update ORDERS DATA untuk menambah/update order
    =================================================== */
 
 // =====================================================
 // ⚙️ ORDERS DATA — UPDATE DI SINI SEBAGAI ADMIN
-// Tambah order baru atau update status di sini
 // =====================================================
 const ordersData = {
-
-  // FORMAT:
-  // "NOMOR-ORDER": {
-  //   customer: "Nama Pemesan",
-  //   product: "Nama Produk",
-  //   qty: jumlah,
-  //   orderDate: "tanggal order",
-  //   estimasi: "tanggal estimasi selesai",
-  //   currentStep: 0-5 (lihat steps di bawah),
-  //   notes: "catatan tambahan (opsional)",
-  //   phone: "08xxx" (opsional, untuk WA konfirmasi)
-  // }
-
   "WTC-2024-001": {
     customer: "Andika Arya P",
     product: "Kemeja PDH HMTE 2023",
@@ -71,58 +57,17 @@ const ordersData = {
     notes: "Sablon satu warna, ukuran 40x35cm",
     phone: "08567890123"
   },
-
-  // ← TAMBAH ORDER BARU DI SINI
+  // ← Tambah order baru di sini
 };
 
-// =====================================================
-// STEP DEFINITIONS
-// currentStep: 0=Diterima, 1=Desain, 2=Produksi,
-//              3=QC, 4=Finishing, 5=Selesai
-// =====================================================
+// Step definitions
 const trackingSteps = [
-  {
-    id: 0,
-    label: "Order Diterima",
-    sublabel: "Pesanan masuk & dikonfirmasi",
-    icon: "clipboard-check",
-    color: "#00d4ff"
-  },
-  {
-    id: 1,
-    label: "Proses Desain",
-    sublabel: "Tim desain sedang mengerjakan",
-    icon: "palette",
-    color: "#0099ff"
-  },
-  {
-    id: 2,
-    label: "Produksi",
-    sublabel: "Bahan dipotong & dijahit",
-    icon: "settings",
-    color: "#0066ff"
-  },
-  {
-    id: 3,
-    label: "Quality Control",
-    sublabel: "Pengecekan kualitas produk",
-    icon: "shield-check",
-    color: "#6644ff"
-  },
-  {
-    id: 4,
-    label: "Finishing",
-    sublabel: "Packaging & persiapan kirim",
-    icon: "package",
-    color: "#aa22ff"
-  },
-  {
-    id: 5,
-    label: "Selesai / Dikirim",
-    sublabel: "Produk siap diambil/dikirim",
-    icon: "check-circle",
-    color: "#00ff88"
-  },
+  { id:0, label:"Order Diterima",  sub:"Pesanan masuk & dikonfirmasi",        icon:"clipboard-check" },
+  { id:1, label:"Proses Desain",   sub:"Tim desain sedang mengerjakan",       icon:"palette"         },
+  { id:2, label:"Produksi",        sub:"Bahan dipotong & dijahit",            icon:"settings"        },
+  { id:3, label:"Quality Control", sub:"Pengecekan kualitas produk",          icon:"shield-check"    },
+  { id:4, label:"Finishing",       sub:"Packaging & persiapan kirim",         icon:"package"         },
+  { id:5, label:"Selesai / Kirim", sub:"Produk siap diambil atau dikirim",    icon:"check-circle"    },
 ];
 
 // =====================================================
@@ -131,590 +76,357 @@ const trackingSteps = [
 (function injectTrackingCSS() {
   const s = document.createElement("style");
   s.textContent = `
-    /* ── Tracking Section ── */
-    #tracking { scroll-margin-top: var(--nav-h); }
+    #trackingWidget { max-width: 760px; margin: 0 auto; }
 
-    .tracking-wrap {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* Search box */
-    .tracking-search {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 2.5rem;
-      position: relative;
-    }
-    .tracking-search-input {
-      flex: 1;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 18px 14px 48px;
-      color: var(--text-primary);
-      font-size: 1rem;
-      font-family: var(--font-mono);
-      letter-spacing: 0.08em;
-      outline: none;
-      transition: all var(--transition);
-      text-transform: uppercase;
-    }
-    .tracking-search-input::placeholder {
-      text-transform: none;
-      letter-spacing: 0;
-      font-family: var(--font-body);
-      color: var(--text-muted);
-    }
-    .tracking-search-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim);
-    }
-    .tracking-search-icon {
-      position: absolute;
-      left: 16px; top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      pointer-events: none;
-    }
-    .tracking-search-btn {
-      padding: 14px 24px;
-      background: var(--gradient);
-      color: #000;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-      border-radius: var(--radius);
-      border: none;
-      cursor: none;
-      transition: all var(--transition);
-      display: flex; align-items: center; gap: 8px;
-      white-space: nowrap;
-    }
-    .tracking-search-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-accent);
-    }
-
-    /* Demo order pills */
-    .tracking-demo-hint {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .tracking-demo-hint p {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-      font-family: var(--font-mono);
-    }
-    .demo-pills {
-      display: flex; gap: 8px;
-      flex-wrap: wrap; justify-content: center;
-    }
-    .demo-pill {
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      color: var(--accent);
-      cursor: none;
-      transition: all var(--transition);
-      background: var(--accent-dim);
-      letter-spacing: 0.05em;
-    }
-    .demo-pill:hover {
-      border-color: var(--accent);
-      background: rgba(0,212,255,0.2);
-      transform: translateY(-1px);
-    }
-
-    /* Result card */
-    .tracking-result {
-      display: none;
-      animation: fadeInUp 0.5s ease;
-    }
-    .tracking-result.show { display: block; }
-
-    .tracking-card {
-      background: var(--bg-card);
+    .track-search-wrap {
+      display: flex; gap: 8px; margin-bottom: 2rem;
+      background: var(--bg-raised);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
+      padding: 6px 6px 6px 16px;
+      transition: border-color .25s;
+    }
+    .track-search-wrap:focus-within { border-color: rgba(10,132,255,0.4); }
+    .track-search-wrap input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--text-primary); font-family: var(--font-mono);
+      font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .track-search-wrap input::placeholder {
+      text-transform: none; letter-spacing: 0;
+      font-family: var(--font-body); color: var(--text-muted); font-size: 0.85rem;
+    }
+    .track-search-btn {
+      padding: 10px 22px;
+      background: var(--accent); color: #fff;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 0.82rem; border-radius: var(--radius);
+      display: flex; align-items: center; gap: 6px;
+      transition: .25s; white-space: nowrap;
+    }
+    .track-search-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    .track-pills-label {
+      font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 10px; font-family: var(--font-mono);
+    }
+    .track-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .track-pill {
+      padding: 5px 14px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-size: 0.72rem; font-family: var(--font-mono);
+      color: var(--accent);
+      background: var(--accent-dim);
+      transition: .2s; letter-spacing: 0.05em;
+    }
+    .track-pill:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    /* Result */
+    .track-result { display: none; }
+    .track-result.show { display: block; animation: fadeSlideUp .4s ease; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .track-card {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
       overflow: hidden;
     }
 
-    /* Card header */
-    .tc-header {
+    /* Header */
+    .tc-head {
       padding: 1.5rem;
-      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,102,255,0.05));
+      background: linear-gradient(135deg, rgba(10,132,255,0.05) 0%, transparent 100%);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
     }
     .tc-order-id {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      margin-bottom: 4px;
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent); font-weight: 600;
+      letter-spacing: 0.1em; margin-bottom: 6px;
     }
-    .tc-product {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .tc-product-name {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 800;
+      margin-bottom: 10px;
     }
-    .tc-meta {
-      display: flex; gap: 1.5rem; flex-wrap: wrap;
-    }
-    .tc-meta-item {
-      display: flex; flex-direction: column; gap: 2px;
-    }
-    .tc-meta-item span:first-child {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .tc-meta-item span:last-child {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
+    .tc-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .tc-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .tc-meta-item span:first-child { font-size: 0.66rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .tc-meta-item span:last-child  { font-size: 0.85rem; font-weight: 600; }
 
-    /* Status badge */
-    .tc-status-badge {
-      padding: 8px 16px;
-      border-radius: 99px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-      display: flex; align-items: center; gap: 6px;
+    .tc-status {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 99px;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.07em; white-space: nowrap;
     }
-    .tc-status-badge .status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
+    .tc-status-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .tc-status.active {
+      background: var(--accent-dim); color: var(--accent);
+      border: 1px solid rgba(10,132,255,0.25);
     }
-    .status-active {
-      background: rgba(0,212,255,0.15);
-      color: var(--accent);
-      border: 1px solid rgba(0,212,255,0.3);
+    .tc-status.active .tc-status-dot { background: var(--accent); animation: dotPulse 2s infinite; }
+    .tc-status.done {
+      background: rgba(48,209,88,0.08); color: var(--green);
+      border: 1px solid rgba(48,209,88,0.25);
     }
-    .status-active .status-dot { background: var(--accent); animation: pulse 2s infinite; }
-    .status-done {
-      background: rgba(0,255,136,0.12);
-      color: #00ff88;
-      border: 1px solid rgba(0,255,136,0.3);
-    }
-    .status-done .status-dot { background: #00ff88; }
+    .tc-status.done .tc-status-dot { background: var(--green); }
 
-    /* Progress bar overall */
-    .tc-progress-bar-wrap {
-      padding: 1.25rem 1.5rem;
+    /* Progress bar */
+    .tc-progress {
+      padding: 1.1rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      background: var(--bg-secondary);
+      background: var(--bg-card);
     }
-    .tc-progress-bar-top {
+    .tc-progress-top {
       display: flex; justify-content: space-between;
-      font-size: 0.78rem; margin-bottom: 8px;
+      font-size: 0.72rem; margin-bottom: 8px;
     }
-    .tc-progress-bar-top span { color: var(--text-muted); }
-    .tc-progress-bar-top strong { color: var(--accent); }
-    .tc-progress-track {
-      height: 6px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-    }
+    .tc-progress-top span { color: var(--text-muted); }
+    .tc-progress-top strong { color: var(--accent); font-family: var(--font-mono); }
+    .tc-progress-track { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
     .tc-progress-fill {
-      height: 100%;
-      background: var(--gradient);
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
       border-radius: 99px;
-      width: 0%;
       transition: width 1.2s cubic-bezier(.4,0,.2,1);
-      position: relative;
-    }
-    .tc-progress-fill::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 20px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
-      border-radius: 99px;
     }
 
-    /* Steps timeline */
-    .tc-steps {
-      padding: 2rem 1.5rem;
-    }
+    /* Steps */
+    .tc-steps { padding: 1.5rem; display: flex; flex-direction: column; gap: 0; }
     .tc-step {
-      display: flex;
-      gap: 1rem;
-      position: relative;
-      padding-bottom: 1.75rem;
+      display: flex; gap: 14px; position: relative;
+      padding-bottom: 1.5rem; opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity .35s ease, transform .35s ease;
     }
     .tc-step:last-child { padding-bottom: 0; }
+    .tc-step.visible { opacity: 1; transform: translateX(0); }
 
-    /* Connector line */
+    /* Connector */
     .tc-step::before {
-      content: '';
-      position: absolute;
-      left: 19px; top: 40px;
-      width: 2px;
-      height: calc(100% - 20px);
-      background: var(--border);
-      z-index: 0;
+      content: ''; position: absolute;
+      left: 17px; top: 36px;
+      width: 1.5px; height: calc(100% - 20px);
+      background: var(--border); z-index: 0;
     }
     .tc-step:last-child::before { display: none; }
-    .tc-step.completed::before {
-      background: linear-gradient(to bottom, var(--accent), rgba(0,212,255,0.2));
+    .tc-step.done::before, .tc-step.current::before {
+      background: linear-gradient(to bottom, rgba(10,132,255,0.4), transparent);
     }
 
     /* Step icon */
     .tc-step-icon {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--bg-secondary);
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      position: relative; z-index: 1;
-      transition: all 0.4s ease;
-      color: var(--text-muted);
+      flex-shrink: 0; position: relative; z-index: 1;
+      transition: all .3s ease; color: var(--text-muted);
     }
-    .tc-step.completed .tc-step-icon {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-      color: var(--accent);
-    }
+    .tc-step.done .tc-step-icon { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
     .tc-step.current .tc-step-icon {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: #000;
-      box-shadow: 0 0 16px var(--accent-glow);
-      animation: iconPulse 2s ease infinite;
+      border-color: var(--accent); background: var(--accent); color: #fff;
+      box-shadow: 0 0 0 4px var(--accent-dim);
+      animation: iconBreath 2s ease infinite;
     }
-    .tc-step.done-final .tc-step-icon {
-      border-color: #00ff88;
-      background: rgba(0,255,136,0.15);
-      color: #00ff88;
-      box-shadow: 0 0 16px rgba(0,255,136,0.3);
-    }
-    @keyframes iconPulse {
-      0%,100% { box-shadow: 0 0 10px var(--accent-glow); }
-      50% { box-shadow: 0 0 24px var(--accent-glow), 0 0 40px rgba(0,212,255,0.15); }
+    .tc-step.final .tc-step-icon { border-color: var(--green); background: rgba(48,209,88,0.12); color: var(--green); }
+    @keyframes iconBreath {
+      0%,100% { box-shadow: 0 0 0 4px var(--accent-dim); }
+      50%      { box-shadow: 0 0 0 8px rgba(10,132,255,0.08); }
     }
 
     /* Step content */
-    .tc-step-content { flex: 1; padding-top: 8px; }
+    .tc-step-info { flex: 1; padding-top: 6px; }
     .tc-step-label {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 3px;
-      color: var(--text-muted);
-      transition: color 0.3s;
+      font-size: 0.88rem; font-weight: 700;
+      color: var(--text-muted); margin-bottom: 2px;
+      display: flex; align-items: center; gap: 8px;
     }
-    .tc-step.completed .tc-step-label,
-    .tc-step.current .tc-step-label { color: var(--text-primary); }
-    .tc-step.done-final .tc-step-label { color: #00ff88; }
-    .tc-step-sub {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+    .tc-step.done .tc-step-label, .tc-step.current .tc-step-label { color: var(--text-primary); }
+    .tc-step.final .tc-step-label { color: var(--green); }
+    .tc-step-sub { font-size: 0.78rem; color: var(--text-muted); }
     .tc-step.current .tc-step-sub { color: var(--text-secondary); }
 
-    /* Current step indicator */
-    .current-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 2px 10px;
-      background: var(--accent);
-      color: #000;
-      border-radius: 99px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-left: 8px;
-      animation: badgePulse 2s ease infinite;
-    }
-    @keyframes badgePulse {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    .tc-now-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; background: var(--accent); color: #fff;
+      border-radius: 99px; font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.06em;
     }
 
-    /* Notes & WA section */
-    .tc-footer {
-      padding: 1.25rem 1.5rem;
+    /* Footer */
+    .tc-foot {
+      padding: 1.1rem 1.5rem;
       border-top: 1px solid var(--border);
-      display: flex; align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      background: var(--bg-secondary);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      background: var(--bg-card);
     }
-    .tc-notes {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      display: flex; align-items: flex-start; gap: 8px;
+    .tc-foot-notes { font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 8px; }
+    .tc-foot-notes i { color: var(--accent); flex-shrink: 0; margin-top: 1px; width: 14px; height: 14px; }
+    .tc-wa-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 16px;
+      background: rgba(48,209,88,0.08);
+      border: 1px solid rgba(48,209,88,0.2);
+      border-radius: var(--radius-sm); color: var(--green);
+      font-size: 0.8rem; font-weight: 600;
+      transition: .2s; white-space: nowrap;
     }
-    .tc-notes i { color: var(--accent); flex-shrink: 0; margin-top: 1px; }
-    .tc-wa-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 18px;
-      background: rgba(37,211,102,0.12);
-      border: 1px solid rgba(37,211,102,0.3);
-      border-radius: var(--radius);
-      color: #25d366;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: none;
-      transition: all var(--transition);
-      white-space: nowrap;
-    }
-    .tc-wa-btn:hover {
-      background: rgba(37,211,102,0.2);
-      transform: translateX(3px);
-    }
+    .tc-wa-link:hover { background: rgba(48,209,88,0.15); }
 
-    /* Not found state */
-    .tracking-notfound {
-      display: none;
-      text-align: center;
-      padding: 3rem 2rem;
-      animation: fadeInUp 0.4s ease;
+    /* Not found */
+    .track-notfound {
+      display: none; text-align: center; padding: 3rem 2rem;
     }
-    .tracking-notfound.show { display: block; }
-    .tracking-notfound i { color: var(--text-muted); margin-bottom: 1rem; }
-    .tracking-notfound h4 {
-      font-family: var(--font-display);
-      font-size: 1.1rem; margin-bottom: 0.5rem;
-    }
-    .tracking-notfound p { font-size: 0.85rem; color: var(--text-secondary); }
+    .track-notfound.show { display: block; animation: fadeSlideUp .4s ease; }
+    .track-notfound h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .track-notfound p { font-size: 0.85rem; color: var(--text-secondary); }
 
-    /* Responsive */
     @media (max-width: 600px) {
-      .tracking-search { flex-direction: column; }
-      .tc-header { flex-direction: column; }
-      .tc-meta { gap: 1rem; }
-      .tc-footer { flex-direction: column; }
+      .tc-head { flex-direction: column; }
+      .tc-foot { flex-direction: column; }
+      .track-search-wrap { flex-direction: column; padding: 10px; }
     }
   `;
   document.head.appendChild(s);
 })();
 
 // =====================================================
-// BUILD TRACKING SECTION IN DOM
+// BUILD TRACKING WIDGET
 // =====================================================
-function buildTrackingSection() {
-  // Buat section tracking
-  const section = document.createElement("section");
-  section.className = "section tracking-section";
-  section.id = "tracking";
+function buildTrackingWidget() {
+  const widget = document.getElementById("trackingWidget");
+  if (!widget) return;
 
-  section.innerHTML = `
-    <div class="container">
-      <div class="section-header fade-in">
-        <div class="section-tag">— Track Order</div>
-        <h2>Lacak <span class="accent">Pesanan</span></h2>
-        <p>Masukkan nomor order untuk melihat progress pembuatan merchandise kamu</p>
-      </div>
-
-      <div class="tracking-wrap">
-        <!-- Search -->
-        <div class="tracking-search fade-in">
-          <i data-lucide="search" class="tracking-search-icon" style="width:18px;height:18px"></i>
-          <input
-            type="text"
-            class="tracking-search-input"
-            id="trackingInput"
-            placeholder="Masukkan nomor order, contoh: WTC-2024-001"
-            maxlength="20"
-          />
-          <button class="tracking-search-btn" id="trackingSearchBtn">
-            <i data-lucide="zap" style="width:16px;height:16px"></i>
-            Lacak
-          </button>
-        </div>
-
-        <!-- Demo hint -->
-        <div class="tracking-demo-hint fade-in">
-          <p>// Coba nomor order demo:</p>
-          <div class="demo-pills">
-            ${Object.keys(ordersData).map(id =>
-              `<div class="demo-pill" onclick="trackOrder('${id}')">${id}</div>`
-            ).join("")}
-          </div>
-        </div>
-
-        <!-- Result -->
-        <div class="tracking-result" id="trackingResult"></div>
-
-        <!-- Not found -->
-        <div class="tracking-notfound" id="trackingNotFound">
-          <i data-lucide="search-x" style="width:48px;height:48px"></i>
-          <h4>Order Tidak Ditemukan</h4>
-          <p>Nomor order tidak valid atau belum terdaftar.<br>
-          Pastikan nomor order sesuai yang dikirim via WhatsApp.</p>
-          <a href="https://wa.me/628157047507" target="_blank"
-            style="display:inline-flex;align-items:center;gap:8px;margin-top:1rem;
-            padding:10px 20px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);
-            border-radius:var(--radius);color:#25d366;font-size:.85rem;font-weight:600">
-            <i data-lucide="message-circle" style="width:16px;height:16px"></i>
-            Konfirmasi via WhatsApp
-          </a>
-        </div>
-      </div>
+  widget.innerHTML = `
+    <div class="track-search-wrap">
+      <input type="text" id="trackInput" placeholder="Masukkan nomor order, contoh: WTC-2024-001" maxlength="20" />
+      <button class="track-search-btn" id="trackBtn">
+        <i data-lucide="search" style="width:14px;height:14px"></i> Lacak
+      </button>
+    </div>
+    <div class="track-pills-label">// Coba nomor order demo:</div>
+    <div class="track-pills">
+      ${Object.keys(ordersData).map(id =>
+        `<button class="track-pill" onclick="trackOrder('${id}')">${id}</button>`
+      ).join("")}
+    </div>
+    <div class="track-result" id="trackResult"></div>
+    <div class="track-notfound" id="trackNotFound">
+      <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+      <h4>Order Tidak Ditemukan</h4>
+      <p>Pastikan nomor order sesuai yang dikirim via WhatsApp.</p>
+      <a href="https://wa.me/628157047507" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:1.25rem;padding:10px 20px;background:rgba(48,209,88,0.08);border:1px solid rgba(48,209,88,0.2);border-radius:var(--radius-sm);color:var(--green);font-size:.82rem;font-weight:600">
+        <i data-lucide="message-circle" style="width:15px;height:15px"></i> Konfirmasi via WhatsApp
+      </a>
     </div>
   `;
 
-  // Sisipkan sebelum section contact
-  const contactSection = document.getElementById("contact");
-  if (contactSection) {
-    contactSection.parentNode.insertBefore(section, contactSection);
-  } else {
-    document.querySelector("footer")?.before(section);
-  }
+  const input = document.getElementById("trackInput");
+  const btn = document.getElementById("trackBtn");
 
-  // Event listeners
-  const input = document.getElementById("trackingInput");
-  const btn = document.getElementById("trackingSearchBtn");
-
-  btn.addEventListener("click", () => {
-    const val = input.value.trim().toUpperCase();
-    if (val) trackOrder(val);
+  btn?.addEventListener("click", () => {
+    const v = input?.value.trim().toUpperCase();
+    if (v) trackOrder(v);
   });
-
-  input.addEventListener("keydown", (e) => {
+  input?.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      const val = input.value.trim().toUpperCase();
-      if (val) trackOrder(val);
+      const v = input.value.trim().toUpperCase();
+      if (v) trackOrder(v);
     }
   });
-
-  // Auto-uppercase
-  input.addEventListener("input", (e) => {
+  input?.addEventListener("input", e => {
     const pos = e.target.selectionStart;
     e.target.value = e.target.value.toUpperCase();
     e.target.setSelectionRange(pos, pos);
   });
 
-  if (window.lucide) lucide.createIcons();
+  if (window.lucide) lucide.createIcons({ nodes: [widget] });
 }
 
 // =====================================================
-// TRACK ORDER FUNCTION
+// TRACK ORDER
 // =====================================================
 window.trackOrder = function(orderId) {
   const id = orderId.toUpperCase().trim();
-  const result = document.getElementById("trackingResult");
-  const notFound = document.getElementById("trackingNotFound");
-  const input = document.getElementById("trackingInput");
+  const result = document.getElementById("trackResult");
+  const notFound = document.getElementById("trackNotFound");
+  const input = document.getElementById("trackInput");
 
   if (!result || !notFound) return;
-
-  // Set input value
   if (input) input.value = id;
 
-  // Hide both first
   result.classList.remove("show");
   notFound.classList.remove("show");
 
-  // Scroll to tracking section
-  const trackSection = document.getElementById("tracking");
-  if (trackSection) {
-    // SPA mode
-    if (typeof navigateTo === "function" && currentPage !== "tracking") {
-      // navigate if in SPA
-    }
-    setTimeout(() => {
-      trackSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  }
+  document.getElementById("tracking")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  // Find order
   const order = ordersData[id];
 
   setTimeout(() => {
     if (!order) {
       notFound.classList.add("show");
-      if (window.lucide) lucide.createIcons();
+      if (window.lucide) lucide.createIcons({ nodes: [notFound] });
       return;
     }
 
-    // Render result
-    result.innerHTML = renderTrackingCard(id, order);
+    result.innerHTML = buildTrackingCard(id, order);
     result.classList.add("show");
 
     // Animate progress bar
     setTimeout(() => {
-      const fill = document.getElementById("tcProgressFill");
+      const fill = document.getElementById("tcFill");
       const pct = Math.round((order.currentStep / (trackingSteps.length - 1)) * 100);
       if (fill) fill.style.width = pct + "%";
 
-      // Animate steps one by one
+      // Stagger steps
       document.querySelectorAll(".tc-step").forEach((step, i) => {
-        setTimeout(() => {
-          step.style.opacity = "1";
-          step.style.transform = "translateX(0)";
-        }, i * 100);
+        setTimeout(() => step.classList.add("visible"), i * 80);
       });
-    }, 100);
+    }, 120);
 
-    if (window.lucide) lucide.createIcons();
-  }, 300);
+    if (window.lucide) lucide.createIcons({ nodes: [result] });
+  }, 280);
 };
 
-// =====================================================
-// RENDER TRACKING CARD HTML
-// =====================================================
-function renderTrackingCard(id, order) {
+function buildTrackingCard(id, order) {
   const pct = Math.round((order.currentStep / (trackingSteps.length - 1)) * 100);
   const isDone = order.currentStep === trackingSteps.length - 1;
-  const currentStepData = trackingSteps[order.currentStep];
 
-  // Status badge
-  const statusBadge = isDone
-    ? `<div class="tc-status-badge status-done">
-        <div class="status-dot"></div> SELESAI
-       </div>`
-    : `<div class="tc-status-badge status-active">
-        <div class="status-dot"></div> ON PROGRESS
-       </div>`;
+  const statusHTML = isDone
+    ? `<div class="tc-status done"><div class="tc-status-dot"></div> SELESAI</div>`
+    : `<div class="tc-status active"><div class="tc-status-dot"></div> ON PROGRESS</div>`;
 
-  // Steps HTML
   const stepsHTML = trackingSteps.map((step, i) => {
     let cls = "";
-    if (i < order.currentStep) cls = "completed";
-    else if (i === order.currentStep) cls = isDone ? "done-final" : "current";
-
-    const isCurrent = i === order.currentStep && !isDone;
+    if (isDone && i === order.currentStep) cls = "final";
+    else if (i < order.currentStep) cls = "done";
+    else if (i === order.currentStep) cls = "current";
 
     return `
-      <div class="tc-step ${cls}" style="opacity:0;transform:translateX(-12px);transition:opacity .4s ease ${i*0.08}s, transform .4s ease ${i*0.08}s">
+      <div class="tc-step ${cls}">
         <div class="tc-step-icon">
-          <i data-lucide="${step.icon}" style="width:18px;height:18px"></i>
+          <i data-lucide="${step.icon}" style="width:15px;height:15px"></i>
         </div>
-        <div class="tc-step-content">
+        <div class="tc-step-info">
           <div class="tc-step-label">
             ${step.label}
-            ${isCurrent ? `<span class="current-badge">● SEKARANG</span>` : ""}
-            ${i < order.currentStep ? `<span style="font-size:.7rem;color:var(--accent);margin-left:6px">✓</span>` : ""}
+            ${i === order.currentStep && !isDone ? `<span class="tc-now-badge">● SEKARANG</span>` : ""}
+            ${i < order.currentStep ? `<span style="font-size:.75rem;color:var(--accent)">✓</span>` : ""}
           </div>
-          <div class="tc-step-sub">${step.sublabel}</div>
+          <div class="tc-step-sub">${step.sub}</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join("");
 
-  // WA message
   const waMsg = encodeURIComponent(
     `Halo WattCo! Saya ingin menanyakan status order:\n\n` +
     `No. Order: ${id}\n` +
@@ -724,100 +436,49 @@ function renderTrackingCard(id, order) {
   );
 
   return `
-    <div class="tracking-card">
-      <!-- Header -->
-      <div class="tc-header">
+    <div class="track-card">
+      <div class="tc-head">
         <div>
           <div class="tc-order-id">${id}</div>
-          <div class="tc-product">${order.product}</div>
+          <div class="tc-product-name">${order.product}</div>
           <div class="tc-meta">
-            <div class="tc-meta-item">
-              <span>Pemesan</span>
-              <span>${order.customer}</span>
-            </div>
-            <div class="tc-meta-item">
-              <span>Jumlah</span>
-              <span>${order.qty} pcs</span>
-            </div>
-            <div class="tc-meta-item">
-              <span>Tgl Order</span>
-              <span>${order.orderDate}</span>
-            </div>
-            <div class="tc-meta-item">
-              <span>Estimasi</span>
-              <span>${order.estimasi}</span>
-            </div>
+            <div class="tc-meta-item"><span>Pemesan</span><span>${order.customer}</span></div>
+            <div class="tc-meta-item"><span>Jumlah</span><span>${order.qty} pcs</span></div>
+            <div class="tc-meta-item"><span>Tgl Order</span><span>${order.orderDate}</span></div>
+            <div class="tc-meta-item"><span>Estimasi</span><span>${order.estimasi}</span></div>
           </div>
         </div>
-        ${statusBadge}
+        ${statusHTML}
       </div>
 
-      <!-- Progress bar overall -->
-      <div class="tc-progress-bar-wrap">
-        <div class="tc-progress-bar-top">
+      <div class="tc-progress">
+        <div class="tc-progress-top">
           <span>Progress keseluruhan</span>
           <strong>${pct}%</strong>
         </div>
         <div class="tc-progress-track">
-          <div class="tc-progress-fill" id="tcProgressFill" style="width:0%"></div>
+          <div class="tc-progress-fill" id="tcFill" style="width:0%"></div>
         </div>
       </div>
 
-      <!-- Steps -->
-      <div class="tc-steps">
-        ${stepsHTML}
-      </div>
+      <div class="tc-steps">${stepsHTML}</div>
 
-      <!-- Footer -->
-      <div class="tc-footer">
-        <div class="tc-notes">
-          <i data-lucide="file-text" style="width:15px;height:15px"></i>
+      <div class="tc-foot">
+        <div class="tc-foot-notes">
+          <i data-lucide="file-text"></i>
           <span>${order.notes || "Tidak ada catatan tambahan"}</span>
         </div>
-        <a href="https://wa.me/628157047507?text=${waMsg}" target="_blank" class="tc-wa-btn">
-          <i data-lucide="message-circle" style="width:15px;height:15px"></i>
+        <a href="https://wa.me/628157047507?text=${waMsg}" target="_blank" class="tc-wa-link">
+          <i data-lucide="message-circle" style="width:14px;height:14px"></i>
           Tanya via WhatsApp
         </a>
       </div>
-    </div>
-  `;
-}
-
-// =====================================================
-// ADD TRACKING TO NAVBAR
-// =====================================================
-function addTrackingToNav() {
-  setTimeout(() => {
-    const navLinks = document.getElementById("navLinks");
-    if (!navLinks) return;
-
-    // Tambahkan link tracking
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <a href="#tracking" class="spa-link" data-page="tracking"
-        style="color:var(--accent) !important"
-        onclick="event.preventDefault(); document.getElementById('tracking')?.scrollIntoView({behavior:'smooth'})">
-        <span>📦</span> Lacak Order
-      </a>
-    `;
-    // Sisipkan sebelum FAQ
-    const links = navLinks.querySelectorAll("li");
-    const faqLi = Array.from(links).find(l => l.querySelector('[data-page="faq"]'));
-    if (faqLi) navLinks.insertBefore(li, faqLi);
-    else navLinks.appendChild(li);
-
-    if (window.lucide) lucide.createIcons();
-  }, 2500);
+    </div>`;
 }
 
 // =====================================================
 // INIT
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    buildTrackingSection();
-    addTrackingToNav();
-    if (window.lucide) lucide.createIcons();
-    console.log("WattCo Order Tracking ready ⚡");
-  }, 2000);
+  buildTrackingWidget();
 });
