@@ -485,3 +485,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (window.lucide) lucide.createIcons();
 });
+// ── VIDEO PLAYER ──
+function playVideo() {
+  const thumb  = document.getElementById("videoThumb");
+  const player = document.getElementById("videoPlayer");
+  const iframe = document.getElementById("ytPlayer");
+
+  // Load src baru (autoplay)
+  iframe.src = iframe.dataset.src;
+
+  thumb.style.display  = "none";
+  player.style.display = "block";
+}

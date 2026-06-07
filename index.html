@@ -189,20 +189,45 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-visual">
-          <div class="about-img-wrap">
-            <img src="images/logo.jpeg" alt="WattCo Studio" />
-            <div class="about-img-overlay"></div>
-            <div class="about-img-tag">
-              <svg viewBox="0 0 80 65" xmlns="http://www.w3.org/2000/svg" width="28">
-                <polygon points="5,5 28,58 40,32 52,58 75,5 63,5 52,40 40,18 28,40 17,5" fill="white"/>
-                <polygon points="48,28 58,5 68,5 54,38" fill="#0A84FF"/>
-              </svg>
-              <div>
-                <strong>WattCo</strong>
-                <span>Power Wear Since 2023</span>
-              </div>
-            </div>
-          </div>
+  <div class="about-img-wrap" style="display:none" id="aboutImgWrap">
+    <img src="..." alt="WattCo Studio" />
+    <!-- gambar lama, disembunyikan kalau video aktif -->
+  </div>
+
+  <!-- VIDEO THUMBNAIL + PLAYER -->
+  <div class="video-wrap" id="videoWrap">
+    <!-- Thumbnail dengan tombol play -->
+    <div class="video-thumb" id="videoThumb" onclick="playVideo()">
+      <img src="images/pdh porto.png" alt="WattCo Company Profile" />
+      <div class="video-play-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+      <div class="video-duration">0:19</div>
+      <div class="video-label">▶ Company Profile WattCo</div>
+    </div>
+
+    <!-- Iframe YouTube (muncul setelah klik) -->
+    <div class="video-player" id="videoPlayer" style="display:none">
+      <iframe
+        id="ytPlayer"
+        src=""
+        data-src="https://www.youtube.com/embed/CJWK2ez67RU?autoplay=1&rel=0&modestbranding=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        style="width:100%;aspect-ratio:16/9;border-radius:16px;border:1px solid rgba(0,212,255,0.2)"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- Stat card tetap ada -->
+  <div class="about-stat-card">
+    <strong>2023</strong>
+    <span>Tahun Berdiri</span>
+  </div>
+</div>
           <div class="about-stat-bubble">
             <strong>2023</strong>
             <span>Tahun Berdiri</span>
